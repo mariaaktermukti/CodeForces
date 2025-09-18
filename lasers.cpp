@@ -11,17 +11,13 @@ int main()
         long long x, y;
         cin >> n >> m >> x >> y;
 
-        vector<long long> a(n), b(m);
+        long long tmp;
         for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
+            cin >> tmp;
         for (int j = 0; j < m; j++)
-        {
-            cin >> b[j];
-        }
+            cin >> tmp;
 
-        cout << max(n, m) + 1 << "\n";
+        cout << n + m << "\n";
     }
     return 0;
 }
