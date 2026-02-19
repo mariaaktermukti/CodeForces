@@ -1,66 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct DSU {
-    int n;
-    vector<int> p;
-    DSU(int _n): n(_n), p(n+1, -1) {}
-    int find(int x) 
-    {
-        return p[x] < 0 ? x : p[x] = find(p[x]);
-    }
-    bool unite(int a, int b) 
-    {
-        a = find(a); b = find(b);
-        if (a == b) return false;
-        if (p[a] > p[b]) swap(a,b);
-        p[a] += p[b];
-        p[b] = a;
-        return true;
-    }
-};
-
-int main()
-{
-    int t;
-    cin >> t;
-    while (t--) 
-    {
+int main() {
+    int T;
+    if (!(cin >> T)) return 0;
+    while (T--) {
         int n;
         cin >> n;
-        vector<tuple<int,int,int,int>> edges;
-        edges.reserve(n);
-        for (int i = 1; i <= n; i++) 
-        {
-            int a, b;
-            cin >> a >> b;
-            edges.emplace_back(b - a, a, b, i);
-        }
-        sort(edges.begin(), edges.end(),
-             [&](auto &L, auto &R){
-                 return get<0>(L) > get<0>(R);
-             });
-        DSU dsu(2*n);
-        vector<int> answer;
-        answer.reserve(n);
+        vector<int> a(n+1), b(n+1);
+        for (int i = 1; i <= n; ++i) cin >> a[i] >> b[i];
 
-        for (auto &e : edges) 
-        {
-            int w = get<0>(e);
-            int a = get<1>(e);
-            int b = get<2>(e);
-            int idx = get<3>(e);
-            if (dsu.unite(a, b)) 
-            {
-                answer.push_back(idx);
+        vector<int> tag(n+1, 1);
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (i == j) continue;
+                if (a[j] <= a[i] && b[i] <= b[j]) {
+                    tag[i] = 0;
+                    break; 
+                }
             }
         }
-        cout << answer.size() << "\n";
-        for (int idx : answer) 
-        {
-            cout << idx << " ";
+
+        vector<int> ans;
+        for (int i = 1; i <= n; ++i) if (tag[i]) ans.push_back(i);
+
+        cout << ans.size() << '\n';
+        for (size_t i = 0; i < ans.size(); ++i) {
+            if (i) cout << ' ';
+            cout << ans[i];
         }
-        cout << "\n";
+        cout << '\n';
     }
     return 0;
 }
